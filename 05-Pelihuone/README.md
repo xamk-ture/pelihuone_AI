@@ -150,23 +150,23 @@ flowchart LR
 
 Jokaisella rivillä on se dokumentti, jonka pitää olla **valmiina ennen seuraavaa vaihetta**, ja malli tenttijärjestelmästä. Malli avataan rinnalle, kun kirjoitat — rakenne lainataan, lauseet eivät.
 
-| # | Missä | Aika | Valmis dokumentti | Malli (tenttijärjestelmä) | Valmis, kun |
-|---|-------|------|-------------------|---------------------------|-------------|
-| 0 | Luokka | 45 min | `docs/tilaus.md` | [tilaus.md](examples/docs/tilaus.md) | Kysymykset kysytty, vastaukset sanatarkasti, "huoneessa selvitettävät" listattu |
-| 1 | Huone | 45 min | `docs/havainnot.md` + kuvat | [havainnot.md](examples/docs/havainnot.md) | Pelipisteet nimetty, 3 ongelmatapausta, jokaisella avoimella kohdalla oletus |
-| 2 | Luokka | 45 min | `docs/domain.md` | [domain.md](examples/docs/domain.md) | Jokaisella säännöllä Paikka ja syy; VO-päätös kirjoitettu; "vapaana nyt" laskettu näkymä |
-| 3 | Luokka | 45 min | `specs/001-varaa-pelipiste.md`, `specs/002-jarjesta-tapahtuma.md` | [001-suorita-tentti.md](examples/specs/001-suorita-tentti.md), [002-luo-tentti.md](examples/specs/002-luo-tentti.md) | Given–When–Then-kriteerit, myös hylkäyksiä; ei-tavoitteet |
-| 4 | Luokka | 60 min | `docs/arkkitehtuuri.md`, `docs/rajapinta.md`, `docs/adr/0001-*.md` | [arkkitehtuuri.md](examples/docs/arkkitehtuuri.md), [rajapinta.md](examples/docs/rajapinta.md), [adr/0001](examples/docs/adr/0001-maaraaika-suorituksessa.md) | ≥4 konkreettista kieltoa; kentät sanoina; ADR:ssä ≥2 vaihtoehtoa ja seuraukset |
-| 5 | Luokka | 45 min | `AGENTS.md`, `docs/versiohallinta.md`, specin **Tehtävät**-osio | [AGENTS.md](examples/AGENTS.md), [versiohallinta.md](examples/docs/versiohallinta.md), [tehtävät specissä](examples/specs/001-suorita-tentti.md#tehtävät) | Pysähtymissääntö ja tarkistuskomennot; 6–10 askelta, jokaisella oma "valmis kun" |
-| 6 | Luokka | 40 min | `docs/tarkistus.md` valmiiksi (kopio talteen, poistetaan reposta ennen koeajoa) | [tarkistus.md](examples/docs/tarkistus.md) | Oma kierros ensin, sitten tekoälyn kuivaharjoitus; jokaisesta löydöstä päätös ja syy |
-| 7 | Luokka | 45 min | `docs/havainnot.md` → osio **Koeajo** | [havainnot.md → Koeajo](examples/docs/havainnot.md#koeajo) — opettajan demo tällä | Kolme lausetta: missä agentti kysyi, missä arvasi, mikä lause puuttui |
+| # | Missä | Valmis dokumentti | Malli (tenttijärjestelmä) | Valmis, kun |
+|---|-------|-------------------|---------------------------|-------------|
+| 0 | Luokka | `docs/tilaus.md` | [tilaus.md](examples/docs/tilaus.md) | Kysymykset kysytty, vastaukset sanatarkasti, "huoneessa selvitettävät" listattu |
+| 1 | Huone | `docs/havainnot.md` + kuvat | [havainnot.md](examples/docs/havainnot.md) | Pelipisteet nimetty, 3 ongelmatapausta, jokaisella avoimella kohdalla oletus |
+| 2 | Luokka | `docs/domain.md` | [domain.md](examples/docs/domain.md) | Jokaisella säännöllä Paikka ja syy; VO-päätös kirjoitettu; "vapaana nyt" laskettu näkymä |
+| 3 | Luokka | `specs/001-varaa-pelipiste.md`, `specs/002-jarjesta-tapahtuma.md` | [001-suorita-tentti.md](examples/specs/001-suorita-tentti.md), [002-luo-tentti.md](examples/specs/002-luo-tentti.md) | Given–When–Then-kriteerit, myös hylkäyksiä; ei-tavoitteet |
+| 4 | Luokka | `docs/arkkitehtuuri.md`, `docs/rajapinta.md`, `docs/adr/0001-*.md` | [arkkitehtuuri.md](examples/docs/arkkitehtuuri.md), [rajapinta.md](examples/docs/rajapinta.md), [adr/0001](examples/docs/adr/0001-maaraaika-suorituksessa.md) | ≥4 konkreettista kieltoa; kentät sanoina; ADR:ssä ≥2 vaihtoehtoa ja seuraukset |
+| 5 | Luokka | `AGENTS.md`, `docs/versiohallinta.md`, specin **Tehtävät**-osio | [AGENTS.md](examples/AGENTS.md), [versiohallinta.md](examples/docs/versiohallinta.md), [tehtävät specissä](examples/specs/001-suorita-tentti.md#tehtävät) | Pysähtymissääntö ja tarkistuskomennot; 6–10 askelta, jokaisella oma "valmis kun" |
+| 6 | Luokka | `docs/tarkistus.md` valmiiksi (kopio talteen, poistetaan reposta ennen koeajoa) | [tarkistus.md](examples/docs/tarkistus.md) | Oma kierros ensin, sitten tekoälyn kuivaharjoitus; jokaisesta löydöstä päätös ja syy |
+| 7 | Luokka | `docs/havainnot.md` → osio **Koeajo** | [havainnot.md → Koeajo](examples/docs/havainnot.md#koeajo) — opettajan demo tällä | Kolme lausetta: missä agentti kysyi, missä arvasi, mikä lause puuttui |
 
 Vaiheissa 2–5 rytmi on sama: **yritä itse → luokan versio opettajan johdolla → täydennä omaasi.** Vaiheessa 0 luokan versio syntyy siinä, kun opettaja vastaa kaikille yhtä aikaa.
 
 ---
 
 <details>
-<summary>Vaihe 0 — Luokassa: tilaus ja tarkennukset → docs/tilaus.md (45 min)</summary>
+<summary>Vaihe 0 — Luokassa: tilaus ja tarkennukset → docs/tilaus.md</summary>
 
 **Miksi tämä vaihe?** Tilaus on asiakkaan ensimmäinen versio, ja siinä on aina aukkoja. Jokainen aukko, jonka löydät nyt, on sääntö tai arvo, jonka agentti muuten keksisi itse. Tämä on työtavan **tarkennus**-vaihe: kysymys on halvin tapa poistaa arvaus.
 
@@ -205,7 +205,7 @@ Vertaa listaa omaasi. Lisää ne kysymykset, joita et itse keksinyt, ja kysy ne 
 </details>
 
 <details>
-<summary>Vaihe 1 — Huone: havainnot → docs/havainnot.md (45 min)</summary>
+<summary>Vaihe 1 — Huone: havainnot → docs/havainnot.md</summary>
 
 **Miksi tämä vaihe?** Sanasto otetaan asiakkaan kielestä, ei tutoriaalista. Jos huoneessa sanotaan "piste 4" eikä "resurssi", järjestelmässä on `Pelipiste`, ei `Resource`. Agentti ei voi käydä huoneessa — sinä olet sen silmät. Ja asiakkaan tilaus ja huoneen todellisuus eroavat aina jostain kohdasta; se kohta on tämän vaiheen tärkein löytö.
 
@@ -240,7 +240,7 @@ Tekoäly ei ole käynyt huoneessa, joten se ei voi kirjoittaa havaintoja. Kun `h
 </details>
 
 <details>
-<summary>Vaihe 2 — Sanasto ja säännöt: docs/domain.md (45 min)</summary>
+<summary>Vaihe 2 — Sanasto ja säännöt: docs/domain.md</summary>
 
 **Miksi tämä vaihe?** Tämä on sama DDD-kuvaus, jonka kirjoitit LeagueHubille kerralla 2 ja välitehtävään — nyt asiasta, jonka kaikki näkivät samana päivänä. Säännön paikka ratkaistaan edelleen yhdellä kysymyksellä: **mitä tietoa tarkistus tarvitsee?** Yhden olion oma data → entiteetti tai value object. Haku tai toinen olio → use case.
 
@@ -273,7 +273,7 @@ Jos tekoäly on eri mieltä Paikasta, älä vaihda automaattisesti. Mieti ensin,
 </details>
 
 <details>
-<summary>Vaihe 3 — Tarinat ja hyväksymiskriteerit: specs/001 ja 002 (45 min)</summary>
+<summary>Vaihe 3 — Tarinat ja hyväksymiskriteerit: specs/001 ja 002</summary>
 
 **Miksi tämä vaihe?** Kerran 3 seeder-spec päättyi riviin `joukkueet 3/3, pelaajat 3/3, ottelut 2/2`. Se oli hyvä, koska sen saattoi ajaa. Tänään sama vaatimus kirjoitetaan muotoon, jonka sekä asiakas, agentti että testi ymmärtävät samalla tavalla: **Given – When – Then** (annettu – kun – niin). Se on alan yleisin hyväksymiskriteerin muoto, ja samaa muotoa käyttävät myös testityökalut. *Given* on lähtötila, *When* on yksi tekeminen, *Then* on lopputulos, jonka voi todeta.
 
@@ -307,7 +307,7 @@ Hyvä lisäkoe: kirjoita itse Given–When–Then säännölle, jolta se puuttuu
 </details>
 
 <details>
-<summary>Vaihe 4 — Rakenne, rajapinta ja yksi päätös: arkkitehtuuri.md, rajapinta.md, ADR (60 min)</summary>
+<summary>Vaihe 4 — Rakenne, rajapinta ja yksi päätös: arkkitehtuuri.md, rajapinta.md, ADR</summary>
 
 **Miksi tämä vaihe?** Rakenteen kuvaus on sama kuin välitehtävässä, joten tämä on kertaus — mutta rajapinta ja ADR ovat uusia tiedostoja. Rajapinnan lupaukset (DTO, validointi, Result, paginaatio, versio) opit **vaatimaan** *Specistä järjestelmäksi* -materiaalin osassa 2, vaikka niitä ei ole vielä koodattu. ADR on tapa kirjata **yksi rakennepäätös** niin, että puolen vuoden päästä ihminen tai seuraava agenttisessio tietää, miksi tehtiin näin eikä toisin.
 
@@ -346,7 +346,7 @@ ADR:n päätös pysyy sinun. Jos vastaväite on hyvä, se kuuluu ADR:n **Seurauk
 </details>
 
 <details>
-<summary>Vaihe 5 — Agentin ohje, versiohallinta ja tehtävälista (45 min)</summary>
+<summary>Vaihe 5 — Agentin ohje, versiohallinta ja tehtävälista</summary>
 
 **Miksi tämä vaihe?** `AGENTS.md` on ensimmäinen tiedosto, jonka uusi sessio lukee. Se ei toista muita tiedostoja; se sanoo lukujärjestyksen ja **milloin pysähtyä**. Tehtävälista on uusi asia: spec pilkotaan askeliksi, jotka agentti tekee **yksi kerrallaan** ja joista jokaisen voi tarkistaa erikseen. Yksi iso promptti sekoittaa domainin, tallennuksen ja rajapinnan — sen koit kerralla 3.
 
@@ -383,7 +383,7 @@ Jos vastaus on "aloittaisin koodaamaan" tai pysähtymiskohtia ei löydy, säänt
 </details>
 
 <details>
-<summary>Vaihe 6 — Tarkistuskierros: oma ja tekoälyn (40 min)</summary>
+<summary>Vaihe 6 — Tarkistuskierros: oma ja tekoälyn</summary>
 
 **Miksi tämä vaihe?** Kirjoittaja ei näe omia aukkojaan, koska hän täyttää ne päässään. Agentti ei täytä — se arvaa. Luokan versiot on jo käyty läpi, joten tässä etsitään erityisesti kohtia, joissa kirjoittajan **oma päätös** jäi perustelematta tai on ristiriidassa toisen tiedoston kanssa.
 
@@ -441,7 +441,7 @@ Kysymykset, joihin vain asiakas voi vastata, kysytään opettajalta ja vastaukse
 </details>
 
 <details>
-<summary>Vaihe 7 — Koeajo agentilla (45 min)</summary>
+<summary>Vaihe 7 — Koeajo agentilla</summary>
 
 **Miksi tämä vaihe?** Kuvaus on hyvä vasta, kun joku joka ei ollut huoneessa rakentaa siitä oikean asian. Agentti on nopein tällainen lukija. Tässä ei arvioida koodin rivejä — arvioidaan, **kysyikö se oikeassa kohdassa ja osuivatko säännöt oikeaan kerrokseen**.
 
