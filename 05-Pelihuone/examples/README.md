@@ -13,7 +13,7 @@ Aihe on tahallaan eri. Tenttijärjestelmän sääntö "palautus vain kerran" ei 
 | 2 Sanasto | [docs/domain.md](docs/domain.md) | Jokainen sääntö omalla rivillään Paikan ja syyn kanssa; VO-päätös; laskettu näkymä |
 | 3 Tarinat | [specs/001-suorita-tentti.md](specs/001-suorita-tentti.md), [specs/002-luo-tentti.md](specs/002-luo-tentti.md) | Given–When–Then, joista osa hylkäyksiä; ei-tavoitteet; tehtävälista |
 | 4 Rakenne | [docs/arkkitehtuuri.md](docs/arkkitehtuuri.md), [docs/rajapinta.md](docs/rajapinta.md), [docs/adr/0001-maaraaika-suorituksessa.md](docs/adr/0001-maaraaika-suorituksessa.md) | Kiellot konkreettisina; kentät sanoina; yksi päätös vaihtoehtoineen |
-| 5 Ohje | [AGENTS.md](AGENTS.md), [docs/versiohallinta.md](docs/versiohallinta.md) | Lukujärjestys, pysähtymissääntö, tarkistuskomennot, Definition of Done |
+| 5 Ohje | [AGENTS.md](AGENTS.md), [docs/agentit.md](docs/agentit.md), [docs/versiohallinta.md](docs/versiohallinta.md) — tässä järjestyksessä | Lukujärjestys, roolit, pysähtymissääntö, tarkistuskomennot, Definition of Done; kuka tekee, kuka tarkistaa, kuka commitoi, kuka yhdistää |
 | 6 Tarkistus | [docs/tarkistus.md](docs/tarkistus.md) | Oma kierros ensin, sitten tekoälyn löydöt; jokaisesta päätös ja syy — myös hylätty ehdotus |
 | 7 Koeajo | [docs/havainnot.md → Koeajo](docs/havainnot.md#koeajo) | Kolme lausetta: missä kysyi, missä arvasi, mikä lause puuttui — ja mitä kuvaukseen lisättiin |
 | Kertaus | [teoriakysymykset.md](teoriakysymykset.md) | Vastaukset tehtävän kertauskysymyksiin |
@@ -24,7 +24,7 @@ Opiskelija avaa vaiheen tiedoston tästä kansiosta **samalla kun** kirjoittaa p
 
 Jos joku on kopioinut lauseen tästä kansiosta, se paljastuu luokan versiossa: lause sopii tenttiin, ei huoneeseen.
 
-Koeajo (vaihe 7) kannattaa näyttää ensin tällä esimerkillä: tyhjä repo, nämä tiedostot ensimmäisenä committina, yksi prompti, `specs/001`:n tehtävälistan askel 1. Luokka katsoo, kysyykö agentti ja mihin kerrokseen "palautus vain kerran" päätyy.
+Koeajo (vaihe 7) kannattaa näyttää ensin tällä esimerkillä: tyhjä repo, nämä tiedostot ensimmäisenä committina, yksi prompti, `specs/001`:n tehtävälistan askel 1. Luokka katsoo, kysyykö agentti, antaako johtaja askeleen Domain-työntekijälle vai tekeekö sen itse, lukeeko katselmoija diffin, ja mihin kerrokseen "palautus vain kerran" päätyy.
 
 ## Mitä tässä ei ole
 

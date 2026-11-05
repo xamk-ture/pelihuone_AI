@@ -26,7 +26,7 @@ Tapa, jolla tänään suunnitellaan, on sama jota alan työkalut nimittävät **
 
 | Vaihe | Kysymys, johon se vastaa | Tiedosto tänään | Muuttuu |
 |-------|--------------------------|-----------------|---------|
-| **Perussäännöt** (*constitution*) | Mitä ei koskaan tehdä, mistä aloitetaan, milloin pysähdytään | `AGENTS.md`, `docs/arkkitehtuuri.md` | Harvoin |
+| **Perussäännöt** (*constitution*) | Mitä ei koskaan tehdä, mistä aloitetaan, milloin pysähdytään, kuka agenteista tekee mitäkin | `AGENTS.md`, `docs/agentit.md`, `docs/arkkitehtuuri.md` | Harvoin |
 | **Tarkennus** (*clarify*) | Mitä tilaus jätti sanomatta — ja mikä arvo tai oletus siihen tulee | `docs/tilaus.md`, `docs/havainnot.md` | Kun asiakkaalta kysytään |
 | **Kieli ja säännöt** (*domain*) | Mitkä sanat, mitkä säännöt, kenen vastuulla | `docs/domain.md` | Kun sääntö muuttuu |
 | **Spec** (*specify*) | Mitä tehdään ja mistä tiedetään, että se on valmis — ei miten | `specs/NNN-*.md` | Uusi tiedosto per ominaisuus |
@@ -66,7 +66,9 @@ Säännöt koko päivälle:
 | **Ei-tavoite** | Ääneen sanottu raja, jota ilman laajuus karkaa | Vaihe 3 |
 | **ADR** | Yhden rakennepäätöksen muistio: tilanne, vaihtoehdot, päätös, seuraukset | Vaihe 4 |
 | **Rajapinnan lupaus** | Reitit, kentät sanoina, statuskoodit, paginaatio, versio | Vaihe 4 |
-| **AGENTS.md** | Repon etusivu agentille: lukujärjestys ja pysähtymissäännöt | Vaihe 5 |
+| **AGENTS.md** | Repon etusivu agentille: lukujärjestys, roolit ja pysähtymissäännöt | Vaihe 5 |
+| **Agenttien hierarkia** | Johtaja jakaa askeleen, kerroskohtainen työntekijä tekee sen, katselmoija lukee diffin; vain johtaja commitoi ja puhuu ihmiselle | Vaihe 5 |
+| **Versiohallinnan työnkulku** | Kuvaus ensin, yksi askel per commit, pull request jonka ihminen yhdistää, lopetusviesti jonka voi tarkistaa | Vaihe 5 |
 | **Tehtävälista** | Spec pilkottuna pieniksi, erikseen tarkistettaviksi askeliksi | Vaihe 5 |
 | **Koeajo** | Agentti saa kuvauksen ja yhden promptin; sinä luet diffin Paikka-saraketta vasten | Vaihe 7 |
 | **Spec-driven development** | Päätökset tiedostoiksi ennen koodia; agentti toteuttaa askeleen kerrallaan niitä vasten | Työtapa yllä |
@@ -118,14 +120,17 @@ Tilauksessa on tahallaan aukkoja: montako pelipistettä, mitkä aukioloajat, mik
 Päivän lopussa omassa repossasi on tämä, eikä yhtään riviä C#:a:
 
 ```text
-AGENTS.md
+AGENTS.md                      ← lukujärjestys, roolit, pysähtymissäännöt, tarkistukset, Definition of Done
+.gitignore                     ← mitä ei repoon, koneluettavana
+.editorconfig                  ← arkkitehtuurin konventiot, koneluettavana
 docs/
 ├── tilaus.md                  ← asiakkaan tilaus, tarkentavat kysymykset ja vastaukset, mitä huoneessa selvitetään
 ├── havainnot.md               ← mitä huoneessa nähtiin, nykyinen tapa, huoneessa selvinneet, avoimet + oletukset
 ├── domain.md                  ← sanasto, käsitteet, invariantit paikkoineen, käyttäytymiset
 ├── arkkitehtuuri.md           ← osat, suunta, kiellot, elinkaari, ei-tavoitteet
 ├── rajapinta.md               ← reitit, kentät sanoina, statuskoodit, paginaatio, versio
-├── versiohallinta.md          ← haarat, spec ennen koodia, commit, mitä ei repoon
+├── agentit.md                 ← roolit: johtaja, työntekijät kerroksittain, katselmoija — mitä kukin lukee, muuttaa ja palauttaa
+├── versiohallinta.md          ← haarat, repon alustus, askeleen työnkulku, commit, pull request, mitä ei repoon, agentin lopetus
 ├── images/                    ← huoneen kuvat
 └── adr/
     └── 0001-tapahtuma-ja-pelipisteet.md
@@ -145,7 +150,7 @@ Tuotoksen koe on **vaihe 7**: agentti saa repon ja yhden promptin, ja rakentaa `
 ```mermaid
 flowchart LR
     V0["0 Luokka<br/>tilaus.md"] --> V1["1 Huone<br/>havainnot.md"] --> V2["2 Luokka<br/>domain.md"] --> V3["3 Luokka<br/>specs/001, 002"]
-    V3 --> V4["4 Luokka<br/>arkkitehtuuri, rajapinta, ADR"] --> V5["5 Luokka<br/>AGENTS.md, versiohallinta, tehtävät"] --> V6["6 Tarkistuskierros"] --> V7["7 Koeajo"]
+    V3 --> V4["4 Luokka<br/>arkkitehtuuri, rajapinta, ADR"] --> V5["5 Luokka<br/>AGENTS.md, agentit, versiohallinta, tehtävät"] --> V6["6 Tarkistuskierros"] --> V7["7 Koeajo"]
 ```
 
 Jokaisella rivillä on se dokumentti, jonka pitää olla **valmiina ennen seuraavaa vaihetta**, ja malli tenttijärjestelmästä. Malli avataan rinnalle, kun kirjoitat — rakenne lainataan, lauseet eivät.
@@ -157,7 +162,7 @@ Jokaisella rivillä on se dokumentti, jonka pitää olla **valmiina ennen seuraa
 | 2 | Luokka | `docs/domain.md` | [domain.md](examples/docs/domain.md) | Jokaisella säännöllä Paikka ja syy; VO-päätös kirjoitettu; "vapaana nyt" laskettu näkymä |
 | 3 | Luokka | `specs/001-varaa-pelipiste.md`, `specs/002-jarjesta-tapahtuma.md` | [001-suorita-tentti.md](examples/specs/001-suorita-tentti.md), [002-luo-tentti.md](examples/specs/002-luo-tentti.md) | Given–When–Then-kriteerit, myös hylkäyksiä; ei-tavoitteet |
 | 4 | Luokka | `docs/arkkitehtuuri.md`, `docs/rajapinta.md`, `docs/adr/0001-*.md` | [arkkitehtuuri.md](examples/docs/arkkitehtuuri.md), [rajapinta.md](examples/docs/rajapinta.md), [adr/0001](examples/docs/adr/0001-maaraaika-suorituksessa.md) | ≥4 konkreettista kieltoa; kentät sanoina; ADR:ssä ≥2 vaihtoehtoa ja seuraukset |
-| 5 | Luokka | `AGENTS.md`, `docs/versiohallinta.md`, specin **Tehtävät**-osio | [AGENTS.md](examples/AGENTS.md), [versiohallinta.md](examples/docs/versiohallinta.md), [tehtävät specissä](examples/specs/001-suorita-tentti.md#tehtävät) | Pysähtymissääntö ja tarkistuskomennot; 6–10 askelta, jokaisella oma "valmis kun" |
+| 5 | Luokka | `AGENTS.md`, `docs/agentit.md`, `docs/versiohallinta.md`, specin **Tehtävät**-osio — tässä järjestyksessä | [AGENTS.md](examples/AGENTS.md), [agentit.md](examples/docs/agentit.md), [versiohallinta.md](examples/docs/versiohallinta.md), [tehtävät specissä](examples/specs/001-suorita-tentti.md#tehtävät) | Pysähtymissääntö, roolit ja tarkistuskomennot; versiohallinnassa sanottu kuka commitoi ja kuka yhdistää; 6–10 askelta, jokaisella oma "valmis kun" |
 | 6 | Luokka | `docs/tarkistus.md` valmiiksi (kopio talteen, poistetaan reposta ennen koeajoa) | [tarkistus.md](examples/docs/tarkistus.md) | Oma kierros ensin, sitten tekoälyn kuivaharjoitus; jokaisesta löydöstä päätös ja syy |
 | 7 | Luokka | `docs/havainnot.md` → osio **Koeajo** | [havainnot.md → Koeajo](examples/docs/havainnot.md#koeajo) — opettajan demo tällä | Kolme lausetta: missä agentti kysyi, missä arvasi, mikä lause puuttui |
 
@@ -346,25 +351,41 @@ ADR:n päätös pysyy sinun. Jos vastaväite on hyvä, se kuuluu ADR:n **Seurauk
 </details>
 
 <details>
-<summary>Vaihe 5 — Agentin ohje, versiohallinta ja tehtävälista</summary>
+<summary>Vaihe 5 — Agentin ohje, agenttien roolit, versiohallinta ja tehtävälista</summary>
 
-**Miksi tämä vaihe?** `AGENTS.md` on ensimmäinen tiedosto, jonka uusi sessio lukee. Se ei toista muita tiedostoja; se sanoo lukujärjestyksen ja **milloin pysähtyä**. Tehtävälista on uusi asia: spec pilkotaan askeliksi, jotka agentti tekee **yksi kerrallaan** ja joista jokaisen voi tarkistaa erikseen. Yksi iso promptti sekoittaa domainin, tallennuksen ja rajapinnan — sen koit kerralla 3.
+**Miksi tämä vaihe?** `AGENTS.md` on ensimmäinen tiedosto, jonka uusi sessio lukee. Se ei toista muita tiedostoja; se sanoo lukujärjestyksen, **kuka agenteista tekee mitäkin** ja **milloin pysähtyä**. Agentteja on nykyään useita yhdessä sessiossa: yksi voi jakaa työtä toisille. Jos rooleja ei ole kirjoitettu, sama agentti kirjoittaa domainin, tallennuksen ja rajapinnan, tarkistaa oman työnsä ja commitoi — eikä kukaan lue diffiä Paikka-saraketta vasten. Versiohallinta sanoo, miten tämä työ päätyy repoon ja kuka saa yhdistää. Tehtävälista on uusi asia: spec pilkotaan askeliksi, jotka tehdään **yksi kerrallaan** ja joista jokaisen voi tarkistaa erikseen. Yksi iso promptti sekoittaa kerrokset — sen koit kerralla 3.
 
-**Tee 1.** `AGENTS.md`, enintään 30 riviä:
+Järjestys on tarkoituksellinen: ensin `AGENTS.md` (säännöt kaikille), sitten `docs/agentit.md` (kuka tekee mitäkin), sitten `docs/versiohallinta.md` (miten tulos päätyy repoon), lopuksi tehtävälista (mitä tehdään ja missä järjestyksessä). Jokainen viittaa edelliseen, ei toisin päin.
 
-- lue tässä järjestyksessä: `docs/domain.md`, `docs/arkkitehtuuri.md`, `docs/rajapinta.md`, `docs/versiohallinta.md`, `docs/adr/`, sitten se spec jota muutos koskee; `tilaus.md` ja `havainnot.md` ovat taustaa, kun jokin tuntuu puuttuvan
-- **ensin suunnitelma:** ennen yhtäkään muutosta agentti esittää suunnitelman pyydetylle askeleelle ja odottaa hyväksyntää (ks. vaihe 7)
-- älä keksi käsitettä, projektia, reittiä tai haaramallia, jota kuvaus ei nimeä
-- jos säännöllä ei ole paikkaa, spec on ristiriidassa dokumenttien kanssa tai `havainnot.md`:n avoin kohta koskee tehtävää, **pysähdy ja kysy**
+**Tee 1.** `AGENTS.md`, noin sivun mittainen. Se koskee jokaista agenttia roolista riippumatta:
+
+- lue tässä järjestyksessä: `docs/domain.md`, `docs/arkkitehtuuri.md`, `docs/rajapinta.md`, `docs/versiohallinta.md`, `docs/agentit.md`, `docs/adr/`, sitten se spec jota muutos koskee; `tilaus.md` ja `havainnot.md` ovat taustaa, kun jokin tuntuu puuttuvan
+- **roolit** lyhyesti, yksi kuva ja muutama rivi: johtaja, kerroskohtaiset työntekijät, katselmoija. Vain johtaja puhuu ihmiselle ja tekee git-toimia; työntekijä kirjoittaa vain omaan kerrokseensa; katselmoija ei muuta tiedostoja. Yksityiskohdat ovat `docs/agentit.md`:ssä
+- **ensin suunnitelma:** ennen yhtäkään muutosta johtaja esittää suunnitelman pyydetylle askeleelle — myös sen, mikä rooli tekee minkä osan — ja odottaa hyväksyntää (ks. vaihe 7)
+- älä keksi käsitettä, projektia, reittiä, roolia tai haaramallia, jota kuvaus ei nimeä
+- jos säännöllä ei ole paikkaa, spec on ristiriidassa dokumenttien kanssa, `havainnot.md`:n avoin kohta koskee tehtävää tai askel vaatii kirjoittamista roolin ulkopuolelle, **pysähdy ja kysy** — työntekijä kysyy johtajalta, johtaja ihmiseltä
 - älä aloita tutoriaalista äläkä yleisestä Clean Architecture -pohjasta
 - tarkistuskomennot: miten solution käännetään, miten testit ajetaan, miten hyväksymiskriteerit todetaan — ja mitä niiden pitää tulostaa
-- Definition of Done kerran tässä: kriteerit ajettu, diff luettu Paikka-saraketta vasten, säännön testi olemassa, ei kiellettyä repoon
+- Definition of Done kerran tässä: kriteerit ajettu, katselmoija palauttanut tyhjän löytölistan, säännön testi olemassa, yksi commit per askel, ei kiellettyä repoon
 
-**Tee 2.** `docs/versiohallinta.md` välitehtävän jaolla: haarat (`master`, `development`, feature), spec ennen koodia (kuvaus commitoituu ennen muutosta), yksi asia per commit, mitä ei repoon, agentin lopetus (haara ja commitit, ei pelkkä "valmis").
+**Tee 2.** `docs/agentit.md`: yksi osio per rooli, jokaisessa sama kaava **Tehtävä · Lukee · Saa muuttaa · Ei saa · Palauttaa johtajalle · Valmis kun**. Roolit: johtaja (jakaa askeleen, kokoaa, commitoi, ei kirjoita koodia), Domain-, Application-, Infrastructure- ja API-työntekijä (kukin kirjoittaa vain oman kerroksensa projektiin ja sen testiprojektiin), katselmoija (lukee diffin Paikka-saraketta, kieltoja ja kriteerejä vasten; palauttaa löytölistan muodossa *tiedosto:rivi — sääntö — korjaus*; tyhjä lista on hyväksyntä). Lisää johtajan tehtävänannon malli: spec ja askel, säännöt ja Paikat, kriteerinumerot, projektit joihin saa kirjoittaa, mitä palautetaan. Kysymys kulkee aina ylöspäin, ei koskaan työntekijältä ihmiselle.
 
-**Tee 3.** Lisää `specs/001-varaa-pelipiste.md`:n loppuun osio **Tehtävät**: 6–10 numeroitua askelta järjestyksessä, jokaisella oma tarkistus. Esimerkiksi: (1) Domain: käsitteet ja entiteetin säännöt + testit ilman web-palvelinta → `dotnet test` vihreä; (2) Application: varaa-use case ja päällekkäisyystarkistus fake-tallennuksella → testit; (3) Infrastructure: tallennus → …; (4) API: reitit ja DTO:t → hyväksymiskriteerit 1–3 HTTP:llä; … Älä kirjoita, *miten* askel toteutetaan — kirjoita, mistä tiedät sen olevan valmis.
+**Tee 3.** `docs/versiohallinta.md` välitehtävän jaolla, täydennettynä sillä, mitä roolit tarvitsevat:
 
-**Checkpoint.** Lue `AGENTS.md` kuin et tietäisi muista tiedostoista mitään: mitä tekisit ensin, ja missä kohdassa pysähtyisit kysymään? Jos vastaus on "aloittaisin koodaamaan", pysähtymissääntö ei ole tarpeeksi konkreettinen. *Halutessasi* anna tiedosto vierustoverille — hän ei täytä aukkoja sinun päälläsi.
+- **haarat:** `master`, `development`, `feature/NNN-aihe` — taulukkona, jossa sanotaan kuka luo ja kuka yhdistää
+- **repon alustus:** mitä ensimmäisessä commitissa on (`AGENTS.md`, `docs/`, `specs/`, `.gitignore`, `.editorconfig`) ja mikä siirretään pois ennen sitä (`tarkistus.md`)
+- **spec ennen koodia:** kuvaus commitoituu ennen muutosta; `domain.md` → spec → koodi, jokainen omana committina
+- **askeleen työnkulku:** johtaja avaa haaran, työntekijä tekee askeleen, katselmoija lukee diffin, tarkistukset vihreinä, johtaja commitoi; yksi askel = yksi commit
+- **commit:** otsikko asiakkaan sanoin, runko kertoo ajetut kriteerit ja testien tulosteen — ja yksi esimerkki
+- **pull request:** agentti avaa, **ihminen yhdistää**; ei rebasea, ei force pushia
+- **mitä ei repoon:** lista, jonka `.gitignore` vartioi; mitä tehdään, jos salaisuus silti pääsi repoon
+- **agentin lopetus:** numeroitu runko — haara, commitit, ajettujen tarkistusten tuloste, ajamatta jääneet kriteerit syineen, avoimet kysymykset. Ei pelkkä "valmis"
+
+Kirjoita samalla `.gitignore` (sama "ei repoon" -lista koneluettavana) ja `.editorconfig` (ne `arkkitehtuuri.md`:n konventiot, jotka editori ja `dotnet format` voivat valvoa). Ne ovat ensimmäisessä commitissa, koska agentti lukee ne ennen ensimmäistä koodiriviä.
+
+**Tee 4.** Lisää `specs/001-varaa-pelipiste.md`:n loppuun osio **Tehtävät**: 6–10 numeroitua askelta järjestyksessä, jokaisella oma tarkistus. Esimerkiksi: (1) Domain: käsitteet ja entiteetin säännöt + testit ilman web-palvelinta → `dotnet test` vihreä; (2) Application: varaa-use case ja päällekkäisyystarkistus fake-tallennuksella → testit; (3) Infrastructure: tallennus → …; (4) API: reitit ja DTO:t → hyväksymiskriteerit 1–3 HTTP:llä; … Jokainen askel kuuluu yhdelle roolille; askel, joka tarvitsee kahta kerrosta, on kaksi askelta. Älä kirjoita, *miten* askel toteutetaan — kirjoita, mistä tiedät sen olevan valmis.
+
+**Checkpoint.** Lue `AGENTS.md` kuin et tietäisi muista tiedostoista mitään: mitä tekisit ensin, kuka tekisi koodin, kuka tarkistaisi, kuka commitoisi, ja missä kohdassa pysähtyisit kysymään? Jos vastaus on "aloittaisin koodaamaan" tai "tekisin ja tarkistaisin itse", sääntö ei ole tarpeeksi konkreettinen. Lue sitten `versiohallinta.md` ja kysy: voiko agentti yhdistää oman pull requestinsa? Jos tiedosto ei kiellä sitä, se tekee sen. *Halutessasi* anna tiedostot vierustoverille — hän ei täytä aukkoja sinun päälläsi.
 
 
 <details>
@@ -372,11 +393,15 @@ ADR:n päätös pysyy sinun. Jos vastaväite on hyvä, se kuuluu ADR:n **Seurauk
 
 Tämä on tekoälylle luontevin tarkistus, koska se on juuri se lukija, jolle `AGENTS.md` kirjoitettiin. Kun tiedosto on valmis, anna **pelkkä** `AGENTS.md` uudelle sessiolle:
 
-> Lue tämä tiedosto. Älä kirjoita koodia. Kerro: mitä tekisit ensimmäiseksi, mitä tiedostoja lukisit ja missä järjestyksessä, ja missä tilanteessa pysähtyisit kysymään.
+> Lue tämä tiedosto. Älä kirjoita koodia. Kerro: mitä tekisit ensimmäiseksi, mitä tiedostoja lukisit ja missä järjestyksessä, kuka agenteista kirjoittaisi koodin ja kuka tarkistaisi sen, ja missä tilanteessa pysähtyisit kysymään.
 
-Jos vastaus on "aloittaisin koodaamaan" tai pysähtymiskohtia ei löydy, sääntö ei ole tarpeeksi konkreettinen. Samalla tavalla tehtävälista:
+Jos vastaus on "aloittaisin koodaamaan", "tekisin kaiken itse" tai pysähtymiskohtia ei löydy, sääntö ei ole tarpeeksi konkreettinen. Sitten `docs/agentit.md` ja `docs/versiohallinta.md` yhdessä:
 
-> Tässä specin Tehtävät-osio. Onko jokainen "valmis kun" todettavissa ilman, että luotan siihen, mitä agentti sanoo? Mikä askel on liian iso tarkistettavaksi yhdellä katseella?
+> Olet Domain-työntekijä ja saat askeleen, jossa use case tarvitsee uuden porttimetodin. Mitä teet? Entä jos olet johtaja ja kaikki tarkistukset ovat vihreitä — saatko yhdistää pull requestin?
+
+Oikea vastaus ensimmäiseen on "palautan kysymyksen johtajalle", toiseen "en, ihminen yhdistää". Jos tekoäly vastaa muuta, lause puuttuu tiedostosta. Samalla tavalla tehtävälista:
+
+> Tässä specin Tehtävät-osio. Onko jokainen "valmis kun" todettavissa ilman, että luotan siihen, mitä agentti sanoo? Mikä askel on liian iso tarkistettavaksi yhdellä katseella, ja mikä askel vaatisi kahta roolia?
 
 </details>
 
@@ -447,29 +472,30 @@ Kysymykset, joihin vain asiakas voi vastata, kysytään opettajalta ja vastaukse
 
 **Tee.**
 
-1. Luo tyhjä GitHub-repo. Ensimmäinen commit haaraan `master` sisältää **vain kuvauksen** (`AGENTS.md`, `docs/`, `specs/`). Haara `development`, siitä `feature/001-varaa-pelipiste`. Spec ennen koodia — nyt se on kirjaimellisesti totta.
-2. **Aina ensin suunnitelma, vasta sitten toteutus.** Avaa agentti repon juuressa ja käynnistä se **suunnittelutilassa** (Claude Code: *Plan mode*, Shift+Tab; Cursor: *Plan*; Copilot: *Plan*-agentti tai Ask-tila). Suunnittelutilassa agentti lukee ja ehdottaa, mutta ei muuta yhtään tiedostoa. Silloin näet sen tulkinnan ennen kuin siitä tulee koodia, ja väärän tulkinnan korjaaminen on yhden lauseen työ eikä diffin purkamista.
+1. Alusta repo `docs/versiohallinta.md`:n mukaan: siirrä `tarkistus.md` pois, `git init`, ensimmäinen commit haaraan `master` sisältää **vain kuvauksen** (`AGENTS.md`, `docs/`, `specs/`, `.gitignore`, `.editorconfig`). Luo `development`. Feature-haaran `feature/001-varaa-pelipiste` avaa johtaja-agentti, ei sinä — se on ensimmäinen asia, jonka versiohallintatiedostosi joko sanoo tai ei sano. Spec ennen koodia — nyt se on kirjaimellisesti totta.
+2. **Aina ensin suunnitelma, vasta sitten toteutus.** Avaa agentti repon juuressa ja käynnistä se **suunnittelutilassa** (Claude Code: *Plan mode*, Shift+Tab; Cursor: *Plan*; Copilot: *Plan*-agentti tai Ask-tila). Suunnittelutilassa agentti lukee ja ehdottaa, mutta ei muuta yhtään tiedostoa. Silloin näet sen tulkinnan ennen kuin siitä tulee koodia, ja väärän tulkinnan korjaaminen on yhden lauseen työ eikä diffin purkamista. Agentti, jolle puhut, on `docs/agentit.md`:n **johtaja**; sen pitää itse päätellä se `AGENTS.md`:stä.
 
    Hyvä suunnitteluprompti:
 
    > Lue AGENTS.md ja ne tiedostot, jotka se käskee lukea. Älä muuta tiedostoja. Tee suunnitelma specs/001-varaa-pelipiste.md:n tehtävälistan **askeleelle 1** ja vain sille. Kerro suunnitelmassa:
-   > 1. mitkä tiedostot luit ja missä järjestyksessä
-   > 2. mitkä projektit ja tiedostot luot tai muutat, ja mikä kunkin vastuu on
+   > 1. mitkä tiedostot luit ja missä järjestyksessä, ja mikä roolisi on
+   > 2. mitkä projektit ja tiedostot luodaan tai muutetaan, mikä kunkin vastuu on, ja mikä rooli tekee minkä osan
    > 3. jokaisesta tähän askeleeseen kuuluvasta säännöstä: missä kerroksessa se tarkistetaan ja mihin docs/domain.md:n riviin se perustuu
-   > 4. mitkä testit kirjoitat ja mitä hyväksymiskriteeriä kukin todistaa
-   > 5. miten tarkistan itse, että askel on valmis (komento ja odotettu tulos)
+   > 4. mitkä testit kirjoitetaan ja mitä hyväksymiskriteeriä kukin todistaa
+   > 5. miten tarkistan itse, että askel on valmis (komento ja odotettu tulos), ja kuka lukee diffin ennen committia
    > 6. kohdat, joissa kuvaus ei riitä tai on ristiriitainen — kysy ne minulta ennen kuin jatkat
    >
    > Jos jokin kohta vaatisi arvausta, älä arvaa: kirjaa se kysymykseksi.
 
-3. **Lue suunnitelma ennen kuin hyväksyt.** Tarkista vähintään: onko jokaisella säännöllä sama Paikka kuin `domain.md`:ssä? Pysyykö suunnitelma askeleessa 1 vai valuuko se seuraaviin? Onko listalla projekti, käsite tai kirjasto, jota kuvaus ei nimeä? Vastaa agentin kysymyksiin. Jos vastaus on tieto, joka puuttui kuvauksesta, **korjaa ensin tiedosto** ja pyydä sitten uusi suunnitelma: vastaus pelkässä keskustelussa katoaa session mukana.
+3. **Lue suunnitelma ennen kuin hyväksyt.** Tarkista vähintään: onko jokaisella säännöllä sama Paikka kuin `domain.md`:ssä? Pysyykö suunnitelma askeleessa 1 vai valuuko se seuraaviin? Onko listalla projekti, käsite, rooli tai kirjasto, jota kuvaus ei nimeä? Aikooko johtaja kirjoittaa koodin itse, vai antaako se askeleen Domain-työntekijälle ja diffin katselmoijalle? Vastaa agentin kysymyksiin. Jos vastaus on tieto, joka puuttui kuvauksesta, **korjaa ensin tiedosto** ja pyydä sitten uusi suunnitelma: vastaus pelkässä keskustelussa katoaa session mukana.
 4. **Vasta sitten toteutus.** Kun suunnitelma on oikein, poistu suunnittelutilasta ja anna:
 
-   > Toteuta hyväksytty suunnitelma askeleelle 1. Älä tee muuta. Lopuksi kerro haara, commitit ja mitä tarkistukset tulostivat.
+   > Toteuta hyväksytty suunnitelma askeleelle 1 docs/agentit.md:n roolijaolla. Älä tee muuta. Lopeta docs/versiohallinta.md:n lopetusviestillä.
 
-5. Kirjaa, mitä tapahtui: mitä agentti kysyi suunnitelmassa? Oliko kysymys sellainen, jonka tarkistuskierros jo löysi? Poikkesiko toteutus hyväksytystä suunnitelmasta?
+5. Kirjaa, mitä tapahtui: mitä agentti kysyi suunnitelmassa? Oliko kysymys sellainen, jonka tarkistuskierros jo löysi? Poikkesiko toteutus hyväksytystä suunnitelmasta? Löysikö katselmoija jotain, ja korjattiinko se ennen committia? Oliko lopetusviestissä kaikki, mitä `versiohallinta.md` vaatii — vai luki siinä "valmis"?
 6. Jatka askel kerrallaan niin pitkälle kuin aika riittää: **suunnitelma → luku → toteutus → oma tarkistus**, joka askeleella. Jokaisen askeleen jälkeen **sinä** ajat tarkistuksen, et agentti.
-7. Lue diff `domain.md`:n Paikka-saraketta vasten: onko päällekkäisyystarkistus use casessa vai controllerissa? Onko aikavälin sääntö entiteetissä tai value objectissa? Onko Domainissa tietokantakirjaston nimi?
+7. Lue diff `domain.md`:n Paikka-saraketta vasten: onko päällekkäisyystarkistus use casessa vai controllerissa? Onko aikavälin sääntö entiteetissä tai value objectissa? Onko Domainissa tietokantakirjaston nimi? Lue myös `git log`: onko yksi commit per askel ja viesti asiakkaan sanoin?
+8. Kun specin askeleet on tehty tai aika loppuu, pyydä johtajaa avaamaan pull request `development`-haaraan. **Sinä yhdistät sen**, agentti ei. Jos agentti yhdisti itse, `versiohallinta.md`:stä puuttuu lause.
 
 **Checkpoint.** Kirjoita `docs/havainnot.md`:n loppuun osio **Koeajo**: kolme lausetta — missä agentti kysyi, missä se arvasi, ja mikä lause kuvaukseen puuttui. Se on päivän tärkein tulos. Jos agenttia ei ole käytettävissä, opettaja ajaa koeajon yhden opiskelijan repolla kaikkien nähden.
 
@@ -494,6 +520,7 @@ Vastaa omin sanoin:
 8. Mikä `AGENTS.md`:n rivi esti (tai olisi estänyt) koeajossa arvauksen?
 9. Miksi agentti ajetaan ensin suunnittelutilassa, ja mitä teet, jos suunnitelma paljastaa kuvauksesta puuttuvan tiedon?
 10. Miksi tekoälyä käytetään tänään vasta oman version jälkeen, ja mitä `tarkistus.md` todistaa?
+11. Miksi katselmoija on eri agentti kuin tekijä, ja miksi vain johtaja commitoi mutta ei yhdistä pull requestia?
 
 </details>
 
@@ -507,7 +534,7 @@ Vastaa omin sanoin:
 | 2 Sanasto | `docs/domain.md` | Kieli, säännöt ja kenen vastuulla kukin sääntö on |
 | 3 Tarinat | `specs/001`, `specs/002` | Mitä tehdään, mistä tietää että se on valmis, mitä ei tehdä |
 | 4 Rakenne | `docs/arkkitehtuuri.md`, `docs/rajapinta.md`, `docs/adr/0001` | Rajat, lupaukset ja yksi perusteltu päätös |
-| 5 Ohje | `AGENTS.md`, `docs/versiohallinta.md`, tehtävälista | Mistä aloittaa, milloin pysähtyä, missä järjestyksessä |
+| 5 Ohje | `AGENTS.md`, `docs/agentit.md`, `docs/versiohallinta.md`, tehtävälista | Mistä aloittaa, kuka tekee ja kuka tarkistaa, milloin pysähtyä, miten tulos päätyy repoon, missä järjestyksessä |
 | 6 Tarkistuskierros | — | Aukot, jotka löytyivät ennen agenttia |
 | 7 Koeajo | `docs/havainnot.md` → Koeajo | Todiste: kysyikö, arvasiko, mikä lause puuttui |
 
