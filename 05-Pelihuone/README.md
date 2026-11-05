@@ -66,6 +66,7 @@ Säännöt koko päivälle:
 | **Ei-tavoite** | Ääneen sanottu raja, jota ilman laajuus karkaa | Vaihe 3 |
 | **ADR** | Yhden rakennepäätöksen muistio: tilanne, vaihtoehdot, päätös, seuraukset | Vaihe 4 |
 | **Rajapinnan lupaus** | Reitit, kentät sanoina, statuskoodit, paginaatio, versio | Vaihe 4 |
+| **Testaussuunnitelma** | Yksi testiaineisto, kello ajossa, kriteerien ajotapa, sääntö → taso -matriisi, kuka ajaa milloin | Vaihe 4 |
 | **AGENTS.md** | Repon etusivu agentille: lukujärjestys, roolit ja pysähtymissäännöt | Vaihe 5 |
 | **Agenttien hierarkia** | Johtaja jakaa askeleen, kerroskohtainen työntekijä tekee sen, katselmoija lukee diffin; vain johtaja commitoi ja puhuu ihmiselle | Vaihe 5 |
 | **Versiohallinnan työnkulku** | Kuvaus ensin, yksi askel per commit, pull request jonka ihminen yhdistää, lopetusviesti jonka voi tarkistaa | Vaihe 5 |
@@ -129,6 +130,7 @@ docs/
 ├── domain.md                  ← sanasto, käsitteet, invariantit paikkoineen, käyttäytymiset
 ├── arkkitehtuuri.md           ← osat, suunta, kiellot, elinkaari, ei-tavoitteet
 ├── rajapinta.md               ← reitit, kentät sanoina, statuskoodit, paginaatio, versio
+├── testaus.md                 ← testiaineisto, kello ajossa, kriteerien ajo, kattavuusmatriisi, milloin ja kuka
 ├── agentit.md                 ← roolit: johtaja, työntekijät kerroksittain, katselmoija — mitä kukin lukee, muuttaa ja palauttaa
 ├── versiohallinta.md          ← haarat, repon alustus, askeleen työnkulku, commit, pull request, mitä ei repoon, agentin lopetus
 ├── images/                    ← huoneen kuvat
@@ -150,7 +152,7 @@ Tuotoksen koe on **vaihe 7**: agentti saa repon ja yhden promptin, ja rakentaa `
 ```mermaid
 flowchart LR
     V0["0 Luokka<br/>tilaus.md"] --> V1["1 Huone<br/>havainnot.md"] --> V2["2 Luokka<br/>domain.md"] --> V3["3 Luokka<br/>specs/001, 002"]
-    V3 --> V4["4 Luokka<br/>arkkitehtuuri, rajapinta, ADR"] --> V5["5 Luokka<br/>AGENTS.md, agentit, versiohallinta, tehtävät"] --> V6["6 Tarkistuskierros"] --> V7["7 Koeajo"]
+    V3 --> V4["4 Luokka<br/>arkkitehtuuri, rajapinta, ADR, testaus"] --> V5["5 Luokka<br/>AGENTS.md, agentit, versiohallinta, tehtävät"] --> V6["6 Tarkistuskierros"] --> V7["7 Koeajo"]
 ```
 
 Jokaisella rivillä on se dokumentti, jonka pitää olla **valmiina ennen seuraavaa vaihetta**, ja malli tenttijärjestelmästä. Malli avataan rinnalle, kun kirjoitat — rakenne lainataan, lauseet eivät.
@@ -161,7 +163,7 @@ Jokaisella rivillä on se dokumentti, jonka pitää olla **valmiina ennen seuraa
 | 1 | Huone | `docs/havainnot.md` + kuvat | [havainnot.md](examples/docs/havainnot.md) | Pelipisteet nimetty, 3 ongelmatapausta, jokaisella avoimella kohdalla oletus |
 | 2 | Luokka | `docs/domain.md` | [domain.md](examples/docs/domain.md) | Jokaisella säännöllä Paikka ja syy; VO-päätös kirjoitettu; "vapaana nyt" laskettu näkymä |
 | 3 | Luokka | `specs/001-varaa-pelipiste.md`, `specs/002-jarjesta-tapahtuma.md` | [001-suorita-tentti.md](examples/specs/001-suorita-tentti.md), [002-luo-tentti.md](examples/specs/002-luo-tentti.md) | Given–When–Then-kriteerit, myös hylkäyksiä; ei-tavoitteet |
-| 4 | Luokka | `docs/arkkitehtuuri.md`, `docs/rajapinta.md`, `docs/adr/0001-*.md` | [arkkitehtuuri.md](examples/docs/arkkitehtuuri.md), [rajapinta.md](examples/docs/rajapinta.md), [adr/0001](examples/docs/adr/0001-maaraaika-suorituksessa.md) | ≥4 konkreettista kieltoa; kentät sanoina; ADR:ssä ≥2 vaihtoehtoa ja seuraukset |
+| 4 | Luokka | `docs/arkkitehtuuri.md`, `docs/rajapinta.md`, `docs/adr/0001-*.md`, `docs/testaus.md` | [arkkitehtuuri.md](examples/docs/arkkitehtuuri.md), [rajapinta.md](examples/docs/rajapinta.md), [adr/0001](examples/docs/adr/0001-maaraaika-suorituksessa.md), [testaus.md](examples/docs/testaus.md) | ≥4 konkreettista kieltoa; kentät sanoina; ADR:ssä ≥2 vaihtoehtoa ja seuraukset; yksi testiaineisto, kello ajossa päätetty, matriisissa jokaiselle säännölle hylkäys |
 | 5 | Luokka | `AGENTS.md`, `docs/agentit.md`, `docs/versiohallinta.md`, specin **Tehtävät**-osio — tässä järjestyksessä | [AGENTS.md](examples/AGENTS.md), [agentit.md](examples/docs/agentit.md), [versiohallinta.md](examples/docs/versiohallinta.md), [tehtävät specissä](examples/specs/001-suorita-tentti.md#tehtävät) | Pysähtymissääntö, roolit ja tarkistuskomennot; versiohallinnassa sanottu kuka commitoi ja kuka yhdistää; 6–10 askelta, jokaisella oma "valmis kun" |
 | 6 | Luokka | `docs/tarkistus.md` valmiiksi (kopio talteen, poistetaan reposta ennen koeajoa) | [tarkistus.md](examples/docs/tarkistus.md) | Oma kierros ensin, sitten tekoälyn kuivaharjoitus; jokaisesta löydöstä päätös ja syy |
 | 7 | Luokka | `docs/havainnot.md` → osio **Koeajo** | [havainnot.md → Koeajo](examples/docs/havainnot.md#koeajo) — opettajan demo tällä | Kolme lausetta: missä agentti kysyi, missä arvasi, mikä lause puuttui |
@@ -312,9 +314,9 @@ Hyvä lisäkoe: kirjoita itse Given–When–Then säännölle, jolta se puuttuu
 </details>
 
 <details>
-<summary>Vaihe 4 — Rakenne, rajapinta ja yksi päätös: arkkitehtuuri.md, rajapinta.md, ADR</summary>
+<summary>Vaihe 4 — Rakenne, rajapinta, yksi päätös ja testaus: arkkitehtuuri.md, rajapinta.md, ADR, testaus.md</summary>
 
-**Miksi tämä vaihe?** Rakenteen kuvaus on sama kuin välitehtävässä, joten tämä on kertaus — mutta rajapinta ja ADR ovat uusia tiedostoja. Rajapinnan lupaukset (DTO, validointi, Result, paginaatio, versio) opit **vaatimaan** *Specistä järjestelmäksi* -materiaalin osassa 2, vaikka niitä ei ole vielä koodattu. ADR on tapa kirjata **yksi rakennepäätös** niin, että puolen vuoden päästä ihminen tai seuraava agenttisessio tietää, miksi tehtiin näin eikä toisin.
+**Miksi tämä vaihe?** Rakenteen kuvaus on sama kuin välitehtävässä, joten tämä on kertaus — mutta rajapinta, ADR ja testaussuunnitelma ovat uusia tiedostoja. Rajapinnan lupaukset (DTO, validointi, Result, paginaatio, versio) opit **vaatimaan** *Specistä järjestelmäksi* -materiaalin osassa 2, vaikka niitä ei ole vielä koodattu. ADR on tapa kirjata **yksi rakennepäätös** niin, että puolen vuoden päästä ihminen tai seuraava agenttisessio tietää, miksi tehtiin näin eikä toisin. Testaussuunnitelma sanoo sen, mitä specin kriteerit eivät sano: millä aineistolla ne ajetaan, miten kello asetetaan käynnissä olevaan ohjelmaan ja kuka ajaa mitäkin milloin. Ilman sitä jokainen testi keksii oman lähtötilansa, eikä kriteerin numero vastaa enää mitään.
 
 **Tee 1.** `docs/arkkitehtuuri.md` samalla jaolla kuin välitehtävässä: Osat (Domain, Application, Infrastructure, API — yksi lause kutakin) · Suunta (Dependency Rule kieltoina) · Kiellot (vähintään neljä konkreettista: "älä tarkista päällekkäisyyttä controllerissa", "älä vie tietokantaa Domainiin", …) · Elinkaari (muistitallennus prosessin ajan, tietokanta pyynnön ajan — miksi eri) · Ei-tavoitteet (ei kirjautumista, ei toista huonetta, ei pilveä, ei CQRS:ää, ei selainta tänään; käynnistys ei lisää demodataa) · Valmis (sanoin, ei skriptinä).
 
@@ -332,7 +334,18 @@ Hyvä lisäkoe: kirjoita itse Given–When–Then säännölle, jolta se puuttuu
 
 Luokan versio päättää tämän yhdellä tavalla. Sinä **saat päättää toisin** — silloin ADR:ssä on oma perustelu, ja `domain.md`:n Paikka-sarake seuraa sitä. Koeajossa nähdään, mitä eri päätös tekee koodille.
 
-**Checkpoint.** Lue ADR:n päätös ja `domain.md`:n invariantit rinnakkain. Jos ADR sanoo "tapahtuma estää varaukset" ja domain.md:n rivi "ei yksittäisvarauksia tapahtuman aikana" on entiteetissä, toinen niistä on väärässä: sääntö tarvitsee haun tapahtumista. Korjaa niin, että tiedostot sanovat saman.
+**Tee 4.** `docs/testaus.md`. Se ei toista arkkitehtuurin Testit-kohtaa eikä specin kriteerejä; se sanoo, miten ne ajetaan:
+
+| Osio | Mitä sivulla on |
+|------|-----------------|
+| Testiaineisto | **Yksi** lähtötila kaikille testeille ja speceille taulukkona: huone, pisteet, asetukset, käyttäjät tunnuksineen ja kiinteä "nyt" päivämäärineen. Specin Given kuvaa vain poikkeaman tästä. Miten aineisto syntyy kullakin tasolla (Domain `new`:llä, use case fakeilla, API omilla reiteillään — ei seedillä) |
+| Kiinteä kello ajossa | Kielto "älä kutsu kelloa" on helppo testissä, mutta miten ihminen asettaa kellon **käynnissä olevaan** ohjelmaan? Päätä ja kirjaa: esimerkiksi kehitysympäristön asetus, jota tuotanto ei lue. Sama kirjautumiskoodille, jos se ei saa mennä lokiin |
+| Hyväksymiskriteerien ajo | Komento, jolla yhden specin kriteerit ajetaan, ja odotettu tuloste; käsiajon tiedostot (`.http`) yksi pyyntö per kriteeri kriteerinumerolla; ajojärjestys specien välillä ja miksi; mihin tulos kirjataan |
+| Kattavuusmatriisi | Sääntö → Paikan taso → specit, joissa se testataan. Jokaisella säännöllä rivi ja hylkäyskriteeri. Tämä on katselmoijan tarkistuslista |
+| Milloin ja kuka | Taulukko: askeleen aikana työntekijä, ennen committia johtaja ja katselmoija, ennen pull requestin yhdistämistä ihminen, ennen masteria ihminen — mitä kukin ajaa ja mihin tulos menee |
+| Mitä ei testata | Ääneen sanottu: suorituskyky, oikea sähköposti, selain, (!)-säännöt ennen vahvistusta |
+
+**Checkpoint.** Lue ADR:n päätös ja `domain.md`:n invariantit rinnakkain. Jos ADR sanoo "tapahtuma estää varaukset" ja domain.md:n rivi "ei yksittäisvarauksia tapahtuman aikana" on entiteetissä, toinen niistä on väärässä: sääntö tarvitsee haun tapahtumista. Korjaa niin, että tiedostot sanovat saman. Lue sitten yksi spec `testaus.md`:n testiaineistoa vasten: voiko jokaisen kriteerin ajaa tästä lähtötilasta, ja kuka asettaa kellon siihen hetkeen, jonka Given sanoo? Jos vastaus on "testi tekee sen jotenkin", lause puuttuu.
 
 
 <details>
@@ -343,6 +356,8 @@ Kun omat tiedostot on kirjoitettu:
 > Tässä ADR. Esitä kolme vastaväitettä päätökselle ja yksi vaihtoehto, jota en harkinnut. Älä kerro, mikä on oikein.
 
 > Tässä arkkitehtuuri.md ja domain.md. Jos olisit kiireinen agentti, minkä kiellon rikkoisit ensimmäisenä, koska sitä ei ole kirjoitettu? Mainitseeko rajapinta.md jokaiselle säännölle statuskoodin?
+
+> Tässä testaus.md ja specit. Mikä sääntö jää kattavuusmatriisissa ilman hylkäyskriteeriä? Mikä specin Given-osa ei ole johdettavissa testiaineistosta? Miten asettaisit kellon käynnissä olevaan ohjelmaan tämän kuvauksen perusteella — vai joutuisitko keksimään tavan?
 
 ADR:n päätös pysyy sinun. Jos vastaväite on hyvä, se kuuluu ADR:n **Seuraukset**-osioon, ei välttämättä uudeksi päätökseksi.
 
@@ -359,7 +374,7 @@ Järjestys on tarkoituksellinen: ensin `AGENTS.md` (säännöt kaikille), sitten
 
 **Tee 1.** `AGENTS.md`, noin sivun mittainen. Se koskee jokaista agenttia roolista riippumatta:
 
-- lue tässä järjestyksessä: `docs/domain.md`, `docs/arkkitehtuuri.md`, `docs/rajapinta.md`, `docs/versiohallinta.md`, `docs/agentit.md`, `docs/adr/`, sitten se spec jota muutos koskee; `tilaus.md` ja `havainnot.md` ovat taustaa, kun jokin tuntuu puuttuvan
+- lue tässä järjestyksessä: `docs/domain.md`, `docs/arkkitehtuuri.md`, `docs/rajapinta.md`, `docs/testaus.md`, `docs/versiohallinta.md`, `docs/agentit.md`, `docs/adr/`, sitten se spec jota muutos koskee; `tilaus.md` ja `havainnot.md` ovat taustaa, kun jokin tuntuu puuttuvan
 - **roolit** lyhyesti, yksi kuva ja muutama rivi: johtaja, kerroskohtaiset työntekijät, katselmoija. Vain johtaja puhuu ihmiselle ja tekee git-toimia; työntekijä kirjoittaa vain omaan kerrokseensa; katselmoija ei muuta tiedostoja. Yksityiskohdat ovat `docs/agentit.md`:ssä
 - **ensin suunnitelma:** ennen yhtäkään muutosta johtaja esittää suunnitelman pyydetylle askeleelle — myös sen, mikä rooli tekee minkä osan — ja odottaa hyväksyntää (ks. vaihe 7)
 - älä keksi käsitettä, projektia, reittiä, roolia tai haaramallia, jota kuvaus ei nimeä
@@ -441,7 +456,7 @@ Lue kohta (3) huolella: jokainen arvaus on lause, joka kuvauksesta puuttuu. Koht
 
 **3. Kattavuus.**
 
-> Listaa domain.md:n invariantit. Kerro jokaisesta, onko specsissä Given–When–Then-kriteeri, joka todistaa sen — ja erityisesti, onko hylkäystapaus.
+> Listaa domain.md:n invariantit. Kerro jokaisesta, onko specsissä Given–When–Then-kriteeri, joka todistaa sen — ja erityisesti, onko hylkäystapaus. Vertaa testaus.md:n kattavuusmatriisiin: sanovatko ne saman?
 
 **4. Vertaa omaan kierrokseesi.** Mitä tekoäly löysi, mitä sinä et löytänyt? Mitä sinä löysit, mitä se ei löytänyt? Molemmat kirjataan.
 
@@ -493,7 +508,7 @@ Kysymykset, joihin vain asiakas voi vastata, kysytään opettajalta ja vastaukse
    > Toteuta hyväksytty suunnitelma askeleelle 1 docs/agentit.md:n roolijaolla. Älä tee muuta. Lopeta docs/versiohallinta.md:n lopetusviestillä.
 
 5. Kirjaa, mitä tapahtui: mitä agentti kysyi suunnitelmassa? Oliko kysymys sellainen, jonka tarkistuskierros jo löysi? Poikkesiko toteutus hyväksytystä suunnitelmasta? Löysikö katselmoija jotain, ja korjattiinko se ennen committia? Oliko lopetusviestissä kaikki, mitä `versiohallinta.md` vaatii — vai luki siinä "valmis"?
-6. Jatka askel kerrallaan niin pitkälle kuin aika riittää: **suunnitelma → luku → toteutus → oma tarkistus**, joka askeleella. Jokaisen askeleen jälkeen **sinä** ajat tarkistuksen, et agentti.
+6. Jatka askel kerrallaan niin pitkälle kuin aika riittää: **suunnitelma → luku → toteutus → oma tarkistus**, joka askeleella. Jokaisen askeleen jälkeen **sinä** ajat tarkistuksen, et agentti — `docs/testaus.md`:n tavalla: sama testiaineisto, kello asetettuna siihen hetkeen, jonka kriteeri sanoo.
 7. Lue diff `domain.md`:n Paikka-saraketta vasten: onko päällekkäisyystarkistus use casessa vai controllerissa? Onko aikavälin sääntö entiteetissä tai value objectissa? Onko Domainissa tietokantakirjaston nimi? Lue myös `git log`: onko yksi commit per askel ja viesti asiakkaan sanoin?
 8. Kun specin askeleet on tehty tai aika loppuu, pyydä johtajaa avaamaan pull request `development`-haaraan. **Sinä yhdistät sen**, agentti ei. Jos agentti yhdisti itse, `versiohallinta.md`:stä puuttuu lause.
 
@@ -521,6 +536,7 @@ Vastaa omin sanoin:
 9. Miksi agentti ajetaan ensin suunnittelutilassa, ja mitä teet, jos suunnitelma paljastaa kuvauksesta puuttuvan tiedon?
 10. Miksi tekoälyä käytetään tänään vasta oman version jälkeen, ja mitä `tarkistus.md` todistaa?
 11. Miksi katselmoija on eri agentti kuin tekijä, ja miksi vain johtaja commitoi mutta ei yhdistä pull requestia?
+12. Miksi testiaineisto on yksi ja kuvattu `testaus.md`:ssä, eikä jokaisen testin oma? Ja miksi kellon asettaminen käynnissä olevaan ohjelmaan on päätös, joka pitää kirjoittaa?
 
 </details>
 
@@ -533,7 +549,7 @@ Vastaa omin sanoin:
 | 1 Huone | `docs/havainnot.md` | Oikeat arvot, ristiriidat tilauksen kanssa, oletukset merkittynä oletuksiksi |
 | 2 Sanasto | `docs/domain.md` | Kieli, säännöt ja kenen vastuulla kukin sääntö on |
 | 3 Tarinat | `specs/001`, `specs/002` | Mitä tehdään, mistä tietää että se on valmis, mitä ei tehdä |
-| 4 Rakenne | `docs/arkkitehtuuri.md`, `docs/rajapinta.md`, `docs/adr/0001` | Rajat, lupaukset ja yksi perusteltu päätös |
+| 4 Rakenne | `docs/arkkitehtuuri.md`, `docs/rajapinta.md`, `docs/adr/0001`, `docs/testaus.md` | Rajat, lupaukset, yksi perusteltu päätös ja se, millä aineistolla ja kellolla valmius todetaan |
 | 5 Ohje | `AGENTS.md`, `docs/agentit.md`, `docs/versiohallinta.md`, tehtävälista | Mistä aloittaa, kuka tekee ja kuka tarkistaa, milloin pysähtyä, miten tulos päätyy repoon, missä järjestyksessä |
 | 6 Tarkistuskierros | — | Aukot, jotka löytyivät ennen agenttia |
 | 7 Koeajo | `docs/havainnot.md` → Koeajo | Todiste: kysyikö, arvasiko, mikä lause puuttui |

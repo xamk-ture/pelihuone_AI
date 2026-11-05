@@ -7,7 +7,7 @@ Miksi näin: yksi agentti, joka tekee domainin, tallennuksen ja rajapinnan samal
 ## Johtaja
 
 - **Tehtävä:** lukee kuvauksen, esittää suunnitelman ihmiselle, jakaa yhden Tehtävät-askeleen kerrallaan, kokoaa tulokset, ajaa lopputarkistukset, commitoi, kirjoittaa lopetusviestin.
-- **Lukee:** kaiken (`AGENTS.md`-lukujärjestys 1–8).
+- **Lukee:** kaiken (`AGENTS.md`-lukujärjestys 1–9).
 - **Saa muuttaa:** ei koodia. Git-toimet (haara, commit, push, pull request) ovat vain johtajan. `docs/`- ja `specs/`-tiedostoja johtaja muuttaa vain ihmisen pyynnöstä ja omassa commitissaan.
 - **Ei saa:** kirjoittaa tai korjata koodia itse, vaikka korjaus olisi yhden rivin; yhdistää pull requestia; antaa samaa askelta kahdelle työntekijälle.
 - **Palauttaa ihmiselle:** suunnitelman ennen työtä, kysymykset työn aikana, lopetusviestin `docs/versiohallinta.md`:n muodossa.
@@ -28,7 +28,7 @@ Palauta: muutetut tiedostot, dotnet test -tuloste, kysymykset
 ## Domain-työntekijä
 
 - **Tehtävä:** käsitteet, arvot, entiteetit ja entiteetin säännöt (tenttiesimerkissä 1–6, 8, 10, 11) sekä tallennuksen rajapinnat.
-- **Lukee:** `docs/domain.md`, `docs/arkkitehtuuri.md`, spec ja sen askel, `docs/adr/`.
+- **Lukee:** `docs/domain.md`, `docs/arkkitehtuuri.md`, `docs/testaus.md` (Testiaineisto, Kattavuusmatriisi), spec ja sen askel, `docs/adr/`.
 - **Saa muuttaa:** Domain-projekti ja sen testiprojekti.
 - **Ei saa:** viitata toiseen projektiin tai kirjastoon; kutsua kelloa (nyt-hetki tulee parametrina, ADR 0001); tallentaa laskettua Tulosta.
 - **Palauttaa johtajalle:** muutetut tiedostot, Domain-testien tuloste, lista säännöistä ja niiden testeistä, kysymykset.
@@ -37,7 +37,7 @@ Palauta: muutetut tiedostot, dotnet test -tuloste, kysymykset
 ## Application-työntekijä
 
 - **Tehtävä:** use caset ja säännöt, jotka tarvitsevat haun (tenttiesimerkissä 7 ja 9), tuloksen laskenta; fake-tallennus ja kiinteä kello testeihin.
-- **Lukee:** `docs/domain.md`, `docs/arkkitehtuuri.md`, `docs/rajapinta.md` (virheet), spec ja sen askel, Domainin julkiset tyypit.
+- **Lukee:** `docs/domain.md`, `docs/arkkitehtuuri.md`, `docs/rajapinta.md` (virheet), `docs/testaus.md` (Testiaineisto, Kattavuusmatriisi), spec ja sen askel, Domainin julkiset tyypit.
 - **Saa muuttaa:** Application-projekti ja sen testiprojekti.
 - **Ei saa:** muuttaa Domainia; lisätä tallennuksen rajapintaa (se on Domainin, pyyntö menee johtajan kautta Domain-työntekijälle); viitata EF Coreen tai ASP.NET Coreen.
 - **Palauttaa johtajalle:** muutetut tiedostot, use case -testien tuloste, kriteeri → testi -lista, puuttuvat rajapintametodit kysymyksinä.
@@ -46,7 +46,7 @@ Palauta: muutetut tiedostot, dotnet test -tuloste, kysymykset
 ## Infrastructure-työntekijä
 
 - **Tehtävä:** tallennuksen rajapintojen toteutus EF Corella ja SQLitella, migraatiot, kello.
-- **Lukee:** `docs/arkkitehtuuri.md`, Domainin rajapinnat ja tyypit, spec ja sen askel.
+- **Lukee:** `docs/arkkitehtuuri.md`, `docs/testaus.md` (Kiinteä kello), Domainin rajapinnat ja tyypit, spec ja sen askel.
 - **Saa muuttaa:** Infrastructure-projekti ja SQLitea vasten ajettavat testit.
 - **Ei saa:** tarkistaa yhtään sääntöä; muuttaa Domainia tai Applicationia; kirjoittaa asetusarvoa koodiin.
 - **Palauttaa johtajalle:** muutetut tiedostot, migraation nimi, testien tuloste, kysymykset.
@@ -55,7 +55,7 @@ Palauta: muutetut tiedostot, dotnet test -tuloste, kysymykset
 ## API-työntekijä
 
 - **Tehtävä:** reitit, DTO:t ja statuskoodit `docs/rajapinta.md`:n mukaan, API-testit specin kriteereille.
-- **Lukee:** `docs/rajapinta.md`, `docs/arkkitehtuuri.md`, spec ja sen askel, use casejen julkiset tyypit.
+- **Lukee:** `docs/rajapinta.md`, `docs/arkkitehtuuri.md`, `docs/testaus.md` (Testiaineisto, Hyväksymiskriteerien ajo), spec ja sen askel, use casejen julkiset tyypit.
 - **Saa muuttaa:** API-projekti ja sen testiprojekti.
 - **Ei saa:** tarkistaa sääntöä controllerissa; kutsua tallennusta ohi use casen; palauttaa Domain-tyyppiä; keksiä reittiä, kenttää tai statuskoodia, jota `rajapinta.md` ei nimeä.
 - **Palauttaa johtajalle:** muutetut tiedostot, API-testien tuloste kriteerinumeroin, kysymykset.
@@ -64,7 +64,7 @@ Palauta: muutetut tiedostot, dotnet test -tuloste, kysymykset
 ## Katselmoija
 
 - **Tehtävä:** lukee askeleen diffin ennen committia ja etsii poikkeamat kuvauksesta. Ei kirjoita koodia, ei ehdota uutta sääntöä.
-- **Lukee:** diffin, `docs/domain.md` (Paikka-sarake), `docs/arkkitehtuuri.md` (Kiellot), `docs/rajapinta.md`, specin kriteerit ja askeleen "valmis kun".
+- **Lukee:** diffin, `docs/domain.md` (Paikka-sarake), `docs/arkkitehtuuri.md` (Kiellot), `docs/testaus.md` (Kattavuusmatriisi), `docs/rajapinta.md`, specin kriteerit ja askeleen "valmis kun".
 - **Tarkistaa tässä järjestyksessä:** 1) sääntö on siinä kerroksessa, jonka Paikka sanoo; 2) kieltoja ei rikota; 3) jokaiselle askeleen säännölle on testi; 4) nimet ovat sanaston mukaiset; 5) repoon ei tule kiellettyä tiedostoa.
 - **Saa muuttaa:** ei mitään.
 - **Palauttaa johtajalle:** löytölistan, yksi rivi per löytö muodossa `tiedosto:rivi — sääntö/kielto — mitä korjataan`. Tyhjä lista on hyväksyntä. Löytö ilman viittausta kuvaukseen ei ole löytö vaan mielipide, ja se jätetään pois.

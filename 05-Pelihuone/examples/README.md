@@ -12,7 +12,7 @@ Aihe on tahallaan eri. Tenttijärjestelmän sääntö "palautus vain kerran" ei 
 | 1 Huone | [docs/havainnot.md](docs/havainnot.md) | Mitä nähtiin; ristiriita tilauksen kanssa; avoimet kohdat merkitty oletuksiksi |
 | 2 Sanasto | [docs/domain.md](docs/domain.md) | Jokainen sääntö omalla rivillään Paikan ja syyn kanssa; VO-päätös; laskettu näkymä |
 | 3 Tarinat | [specs/001-suorita-tentti.md](specs/001-suorita-tentti.md), [specs/002-luo-tentti.md](specs/002-luo-tentti.md) | Given–When–Then, joista osa hylkäyksiä; ei-tavoitteet; tehtävälista |
-| 4 Rakenne | [docs/arkkitehtuuri.md](docs/arkkitehtuuri.md), [docs/rajapinta.md](docs/rajapinta.md), [docs/adr/0001-maaraaika-suorituksessa.md](docs/adr/0001-maaraaika-suorituksessa.md) | Kiellot konkreettisina; kentät sanoina; yksi päätös vaihtoehtoineen |
+| 4 Rakenne | [docs/arkkitehtuuri.md](docs/arkkitehtuuri.md), [docs/rajapinta.md](docs/rajapinta.md), [docs/adr/0001-maaraaika-suorituksessa.md](docs/adr/0001-maaraaika-suorituksessa.md), [docs/testaus.md](docs/testaus.md) | Kiellot konkreettisina; kentät sanoina; yksi päätös vaihtoehtoineen; yksi testiaineisto, kello ajossa, kattavuusmatriisi |
 | 5 Ohje | [AGENTS.md](AGENTS.md), [docs/agentit.md](docs/agentit.md), [docs/versiohallinta.md](docs/versiohallinta.md) — tässä järjestyksessä | Lukujärjestys, roolit, pysähtymissääntö, tarkistuskomennot, Definition of Done; kuka tekee, kuka tarkistaa, kuka commitoi, kuka yhdistää |
 | 6 Tarkistus | [docs/tarkistus.md](docs/tarkistus.md) | Oma kierros ensin, sitten tekoälyn löydöt; jokaisesta päätös ja syy — myös hylätty ehdotus |
 | 7 Koeajo | [docs/havainnot.md → Koeajo](docs/havainnot.md#koeajo) | Kolme lausetta: missä kysyi, missä arvasi, mikä lause puuttui — ja mitä kuvaukseen lisättiin |
